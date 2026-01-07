@@ -6,6 +6,7 @@ from scalar_fastapi import get_scalar_api_reference
 from app.api.router import master_router
 from app.api.tag import APITag
 from app.core.exceptions import add_exception_handlers
+from app.database.session import create_db_tables
 # from app.core.logging import logger
 
 description = """
@@ -63,6 +64,13 @@ app.include_router(master_router)
 
 # Add custom exception handlers
 add_exception_handlers(app)
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Create database tables on application startup."""
+    await create_db_tables()
+
 
 @app.get('/')
 def root():

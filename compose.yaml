@@ -17,7 +17,7 @@ services:
       - celery
 
   db:
-    image: postgres
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "strong"
@@ -35,6 +35,12 @@ services:
 
   celery:
     build: .
-    command: ["celery", "-A", "app.worker.tasks", "worker", "--loglevel=info"]
+    env_file:
+      - .env
     environment:
+      POSTGRES_SERVER: db
       REDIS_HOST: redis
+    command: ["celery", "-A", "app.worker.tasks", "worker", "--loglevel=info"]
+    depends_on:
+      - db
+      - redis

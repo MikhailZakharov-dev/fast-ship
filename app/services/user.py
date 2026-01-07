@@ -85,8 +85,10 @@ class UserService(BaseService):
         ):
             raise BadCredentials()
         
-        if not user.email_verified:
-            raise ClientNotVerified()
+        # TODO: Re-enable email verification when SMTP is configured
+        # Temporarily disabled for development
+        # if not user.email_verified:
+        #     raise ClientNotVerified()
 
         return generate_access_token(
             data={
