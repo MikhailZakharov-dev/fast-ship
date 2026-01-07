@@ -39,25 +39,25 @@ flowchart TB
 
 ```mermaid
 sequenceDiagram
-  participant S as Seller
-  participant API as FastShip API
-  participant DB as Postgres
-  participant P as Partner
-  participant R as Recipient
-  participant Q as Celery/Redis
+  autonumber
+  participant S as 🏪 Seller
+  participant F as 🚚 FastShip
+  participant P as 🚛 Delivery Partner
+  participant R as 📦 Recipient
 
-  S->>API: Create shipment
-  API->>DB: Save shipment
-  API->>DB: Find partner by destination + capacity
-  API-->>P: Auto-assign shipment
+  S->>F: Create shipment (recipient + destination)
+  F->>P: Auto-assign best available partner
+  F-->>S: ✅ Assigned + shareable tracking link
 
-  P->>API: Update status/location
-  API->>DB: Append timeline event
-  API->>Q: Send notifications (async)
+  P->>F: Update delivery progress (status + location)
+  F-->>R: 🔔 Updates via tracking link + notifications
 
-  R->>API: Open public tracking link
-  API->>DB: Load shipment + timeline
-  API-->>R: Tracking page
+  P->>F: Set status: Out for delivery
+  F-->>R: 🔐 Send verification code (Email/SMS)
+
+  P->>F: Deliver package + confirm code
+  F-->>R: ⭐ Optional review link
+  F-->>S: ✅ Delivery completed
 ```
 
 ### Shipment lifecycle
