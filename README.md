@@ -59,23 +59,6 @@ sequenceDiagram
   F-->>R: ⭐ Optional review link
   F-->>S: ✅ Delivery completed
 ```
-
-### Shipment lifecycle
-
-```mermaid
-stateDiagram-v2
-  [*] --> placed
-  placed --> in_transit
-  in_transit --> out_for_delivery
-  out_for_delivery --> delivered
-
-  placed --> cancelled
-  in_transit --> cancelled
-
-  delivered --> [*]
-  cancelled --> [*]
-```
-
 ---
 
 ## Tech overview
